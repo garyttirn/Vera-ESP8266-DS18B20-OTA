@@ -18,6 +18,9 @@
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 4 //GPIO4
 
+//Atomic OTA Updates
+#define ATOMIC_FS_UPDATE
+
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature DS18B20(&oneWire);
 
@@ -37,7 +40,9 @@ ADC_MODE(ADC_VCC);
 
 String ProgramVersion  = "0.1";
 
-float glb_temp=0,glb_batterylevel=0;
+float glb_temp=0;
+int glb_batterylevel=0;
+long glb_rssi=0;
 
 WiFiClient client;
 HTTPClient http;
@@ -182,25 +187,6 @@ int connect_wifi (){
 return wifiStatus;
 }
 
-void setup() {
-  //switch radio off to save energy
-  WiFi.mode(WIFI_OFF);
-  WiFi.forceSleepBegin();
-  
-  //Disable WiFi status LED to save battery
-  wifi_status_led_uninstall();
-  
-  delay(100);
-
-  Serial.begin(115200);
-  Serial.setDebugOutput(false);
-  
-   //Initialize sensor
-  DS18B20.begin();
-
-  Serial.print("\n" + String(ESPName) + " started\n");
-}
-
 int ReadSensor() {
   int readloops=0;
   
@@ -246,6 +232,14 @@ float getBatteryStatus(){
   return 0; 
 }
 
+int getRSSI(){
+  glb_rssi=WiFi.RSSI();
+
+  Serial.println("WiFi RSSI: " + String(glb_rssi) + "dBm");
+
+  return 0;
+}
+
 int GetHttpURL(String MyURL){
   Serial.print("[HTTP] begin...\n");
 
@@ -267,7 +261,23 @@ int GetHttpURL(String MyURL){
  return httpCode;
 }
 
-void loop() {
+void setup() {
+  //switch radio off to save energy
+  WiFi.mode(WIFI_OFF);
+  WiFi.forceSleepBegin();
+
+  //Disable WiFi status LED to save battery
+  wifi_status_led_uninstall();
+
+  delay(100);
+
+  Serial.begin(115200);
+  Serial.setDebugOutput(false);
+
+   //Initialize sensor
+  DS18B20.begin();
+
+  Serial.print("\n" + String(ESPName) + " started\n");
 
   int SensorStatus = ReadSensor(); 
 
@@ -275,18 +285,25 @@ void loop() {
     GoToDeepSleep(sleepTimeS);
   }
 
-  int BatteryStatus = getBatteryStatus();
-  
+  getBatteryStatus();
+
   // Connect WiFi
   connect_wifi();
+
+  getRSSI();
 
   http.setReuse(true);
 
   GetHttpURL("data_request?id=variableset&DeviceNum=" + String(VeraTempDeviceID) + "&serviceId=urn:upnp-org:serviceId:TemperatureSensor1&Variable=CurrentTemperature&Value=" + String(glb_temp));
+  GetHttpURL("data_request?id=variableset&DeviceNum=" + String(VeraTempDeviceID) + "&serviceId=urn:upnp-org:serviceId:TemperatureSensor1&Variable=CurrentRSSI&Value=" + String(glb_rssi));
   GetHttpURL("data_request?id=variableset&DeviceNum=" + String(VeraTempDeviceID) + "&serviceId=urn:micasaverde-com:serviceId:HaDevice1&Variable=BatteryLevel&Value=" + String(glb_batterylevel));
 
   http.end();
 
   GoToDeepSleep(sleepTimeS);
+}
+
+void loop() {
+// Nothing Here
 }
 //EOF
