@@ -12,6 +12,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
+#include <coredecls.h> //crc32
 
 // One Wire for DS18B20
 #include <OneWire.h>
@@ -46,26 +47,6 @@ long glb_rssi=0;
 
 WiFiClient client;
 HTTPClient http;
-
-uint32_t calculateCRC32( const uint8_t *data, size_t length ) {
-  uint32_t crc = 0xffffffff;
-  while( length-- ) {
-    uint8_t c = *data++;
-    for( uint32_t i = 0x80; i > 0; i >>= 1 ) {
-      bool bit = crc & 0x80000000;
-      if( c & i ) {
-        bit = !bit;
-      }
-
-      crc <<= 1;
-      if( bit ) {
-        crc ^= 0x04c11db7;
-      }
-    }
-  }
-
-  return crc;
-}
 
 void GoToDeepSleep(int SleepDelay){
   Serial.print("Sleeping " + String(SleepDelay) + " seconds\n");
@@ -138,7 +119,7 @@ int connect_wifi (){
   bool rtcValid = false;
   if( ESP.rtcUserMemoryRead( 0, (uint32_t*)&rtcData, sizeof( rtcData ) ) ) {
     // Calculate the CRC of what we just read from RTC memory, but skip the first 4 bytes as that's the checksum itself.
-    uint32_t crc = calculateCRC32( ((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4 );
+    uint32_t crc = crc32(((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4,0xffffffff);
     if( crc == rtcData.crc32 ) {
       rtcValid = true;
     }
@@ -184,7 +165,7 @@ int connect_wifi (){
     // Write current connection info back to RTC
    rtcData.channel = WiFi.channel();
    memcpy( rtcData.bssid, WiFi.BSSID(), 6 ); // Copy 6 bytes of BSSID (AP's MAC address)
-   rtcData.crc32 = calculateCRC32( ((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4 );
+   rtcData.crc32 = crc32(((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4,0xffffffff);
    ESP.rtcUserMemoryWrite( 0, (uint32_t*)&rtcData, sizeof( rtcData ) );
 
    //Check for updates
