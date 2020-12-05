@@ -88,7 +88,7 @@ void update_error(int err) {
   Serial.printf("HTTP update fatal error code %d\n", err);
 }
 
-void checkForUpdates() {
+int checkForUpdates() {
     ESPhttpUpdate.setLedPin(LED_BUILTIN, LOW);
 
     // Add optional callback notifiers
@@ -96,6 +96,11 @@ void checkForUpdates() {
     ESPhttpUpdate.onEnd(update_finished);
     ESPhttpUpdate.onProgress(update_progress);
     ESPhttpUpdate.onError(update_error);
+
+    if (glb_batterylevel < 50) {
+      Serial.print("\nBattery Level too low for OTA update"\n");
+      return 1;
+    }
 
     Serial.print("\nChecking for update from " + String(UpdateURL) + ". Current FW version " + String(FWVersion) + "\n");
     t_httpUpdate_return ret = ESPhttpUpdate.update(client, String(UpdateURL),String(FWVersion));
@@ -115,6 +120,8 @@ void checkForUpdates() {
         ESP.restart();
         break;
     }
+
+  return 1;
 }
 
 int connect_wifi (){
