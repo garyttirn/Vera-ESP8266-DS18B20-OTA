@@ -1,4 +1,3 @@
-
 /**
  * ESP8266 12F and DS18B20 Temperature and Humidity Sersor with Vera integration. 
  * 
@@ -48,9 +47,32 @@ long glb_rssi=0;
 WiFiClient client;
 HTTPClient http;
 
+#define ets_wdt_disable ((void (*)(void))0x400030f0)
+#define ets_delay_us ((void (*)(int))0x40002ecc)
+#define _R (uint32_t *)0x60000700
+
 void GoToDeepSleep(int SleepDelay){
   Serial.print("Sleeping " + String(SleepDelay) + " seconds\n");
-  ESP.deepSleepInstant(SleepDelay * 1000000,WAKE_RF_DISABLED);
+  uint64_t time = SleepDelay * 1000000;
+  //DeepSleep workaround for broken ESP8266 boards
+  //https://github.com/Erriez/ErriezArduinoExamples/commit/486c9b9a15ef3721e83206f561633e832e6649c6
+
+  delay(10);
+
+   ets_wdt_disable();
+   *(_R + 4) = 0;
+   *(_R + 17) = 4;
+   *(_R + 1) = *(_R + 7) + 5;
+   *(_R + 6) = 8;
+   *(_R + 2) = 1 << 20;
+   ets_delay_us(10);
+   *(_R + 39) = 0x11;
+   *(_R + 40) = 3;
+   *(_R) &= 0xFCF;
+   *(_R + 1) = *(_R + 7) + (45*(time >> 8));
+   *(_R + 16) = 0x7F;
+   *(_R + 2) = 1 << 20;
+   __asm volatile ("waiti 0");
 }
 
 void update_started() {
@@ -102,7 +124,7 @@ int checkForUpdates() {
         break;
     }
 
-  return 1;
+return 0;
 }
 
 int connect_wifi (){
@@ -119,7 +141,7 @@ int connect_wifi (){
   bool rtcValid = false;
   if( ESP.rtcUserMemoryRead( 0, (uint32_t*)&rtcData, sizeof( rtcData ) ) ) {
     // Calculate the CRC of what we just read from RTC memory, but skip the first 4 bytes as that's the checksum itself.
-    uint32_t crc = crc32(((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4,0xffffffff);
+    uint32_t crc = crc32( ((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4,0xffffffff);
     if( crc == rtcData.crc32 ) {
       rtcValid = true;
     }
@@ -165,7 +187,7 @@ int connect_wifi (){
     // Write current connection info back to RTC
    rtcData.channel = WiFi.channel();
    memcpy( rtcData.bssid, WiFi.BSSID(), 6 ); // Copy 6 bytes of BSSID (AP's MAC address)
-   rtcData.crc32 = crc32(((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4,0xffffffff);
+   rtcData.crc32 = crc32( ((uint8_t*)&rtcData) + 4, sizeof( rtcData ) - 4,0xffffffff );
    ESP.rtcUserMemoryWrite( 0, (uint32_t*)&rtcData, sizeof( rtcData ) );
 
    //Check for updates
@@ -177,7 +199,7 @@ return wifiStatus;
 
 int ReadSensor() {
   int readloops=0;
-  
+
   Serial.print("\nRequesting DS18B20 temperature...\n");
 
   do {
@@ -187,7 +209,6 @@ int ReadSensor() {
 
     readloops++;
   } while (glb_temp == 85.0 || glb_temp == (-127.0) || readloops <=5);
-
 
   // Check if any reads failed and exit early (to try again).
   if (isnan(glb_temp)) {
@@ -201,7 +222,7 @@ int ReadSensor() {
 
 float getBatteryStatus(){
   glb_batterylevel=ESP.getVcc();
-    
+
   Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
 
   //Calculate estimated percentage
@@ -216,7 +237,7 @@ float getBatteryStatus(){
     }
 
   Serial.println("Battery level: " + String(glb_batterylevel) + "%");
-    
+
   return 0; 
 }
 
@@ -232,10 +253,10 @@ int GetHttpURL(String MyURL){
   Serial.print("[HTTP] begin...\n");
 
   http.begin(client,String(VeraBaseURL) + MyURL);
-    
+
   int httpCode = http.GET();
 
-   if (httpCode > 0) {
+  if (httpCode > 0) {
      Serial.printf("[HTTP] GET... code: %d\n", httpCode);
     
      if (httpCode == HTTP_CODE_OK) {
@@ -262,7 +283,11 @@ void setup() {
   Serial.begin(115200);
   Serial.setDebugOutput(false);
 
-   //Initialize sensor
+  // Debug info
+  // rst_info *rinfo = ESP.getResetInfoPtr();
+  // Serial.print(String("\nResetInfo.reason = ") + (*rinfo).reason + ": " + ESP.getResetReason() + "\n");
+
+  //Initialize sensor
   DS18B20.begin();
 
   Serial.print("\n" + String(ESPName) + " started\n");
