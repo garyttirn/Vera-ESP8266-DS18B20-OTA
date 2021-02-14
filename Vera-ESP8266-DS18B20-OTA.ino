@@ -200,6 +200,9 @@ return wifiStatus;
 int ReadSensor() {
   int readloops=0;
 
+  // Set the resolution for all devices to 10 bits = 0.25C :
+  DS18B20.setResolution(10);
+
   Serial.print("\nRequesting DS18B20 temperature...\n");
 
   do {
