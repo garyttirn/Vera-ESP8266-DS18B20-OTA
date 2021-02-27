@@ -223,26 +223,506 @@ int ReadSensor() {
   return 0;
 }
 
-float getBatteryStatus(){
+int getBatteryStatus(){
   glb_batterylevel=ESP.getVcc();
-
+    
   Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
 
   //Calculate estimated percentage
-  if (glb_batterylevel >= 3400) {
+  if (glb_batterylevel >= 3800) {
     glb_batterylevel = 100;
     }
-  else if ( glb_batterylevel <= 3400 || glb_batterylevel >= 3300 ) {
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
     glb_batterylevel = 50;
     }
-  else {
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
     glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    GoToDeepSleep(21600);
     }
 
   Serial.println("Battery level: " + String(glb_batterylevel) + "%");
-
+    
   return 0; 
 }
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
+float getBatteryStatus(){
+  glb_batterylevel=ESP.getVcc();
+    
+  Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
+
+  //Calculate estimated percentage
+  if (glb_batterylevel >= 3800) {
+    glb_batterylevel = 100;
+    }
+  else if ( glb_batterylevel <= 3799 || glb_batterylevel >= 3600 ) {
+    glb_batterylevel = 50;
+    }
+  else if ( glb_batterylevel <= 3599 || glb_batterylevel >= 3100 ) {
+    glb_batterylevel = 10;
+    }
+  else {
+    //Battery too low (<3100), sleep 6h or forever which ever comes first.
+    gotoDeepSleep(21600);
+    }
+
+  Serial.println("Battery level: " + String(glb_batterylevel) + "%");
+    
+  return 0; 
+}
+
 
 int getRSSI(){
   glb_rssi=WiFi.RSSI();
