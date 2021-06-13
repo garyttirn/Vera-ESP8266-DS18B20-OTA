@@ -212,7 +212,7 @@ int ReadSensor() {
   return 0;
 }
 
-float getBatteryStatus(){
+int getBatteryStatus(){
   glb_batterylevel=ESP.getVcc();
     
   Serial.println("Battery VCC: " + String(glb_batterylevel*0.001)+ "V");
